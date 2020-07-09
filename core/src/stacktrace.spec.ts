@@ -1,4 +1,5 @@
 import cuillere, { Cuillere } from '.'
+import { all } from './middlewares'
 
 describe('stacktrace', () => {
   let cllr: Cuillere
@@ -157,5 +158,40 @@ describe('stacktrace', () => {
     expect(stack[1]).toMatch(/^ +at Stack.validateOperation \(.+\)$/)
     expect(stack[2]).toMatch(/^ +at Stack.handle \(.+\)$/)
     expect(stack[3]).toMatch(/^ +at Stack.start \(.+\)$/)
+  })
+
+  it('should capture stack for async generator', async () => {
+    async function* test() {
+      yield throwTypeError()
+    }
+
+    function* throwTypeError() {
+      throw new TypeError('test')
+    }
+
+    let stack: string[]
+    try {
+      await cllr.call(test)
+    } catch (e) {
+      console.log(e)
+      stack = e.stack.split('\n')
+    }
+
+    expect(stack[0]).toBe('TypeError: test')
+    expect(stack[1]).toMatch(/^ +at throwTypeError \(.+\/stacktrace\.spec\.ts:.+\)$/)
+    expect(stack[2]).toBe('    at test (<unknown>)')
+    expect(stack[3]).toMatch(/^ +at Stack.execute \(.+\)$/)
+  })
+
+  it('should capture stack in fork', async () => {
+    function* test() {
+      yield all(throwTypeError())
+    }
+
+    function* throwTypeError() {
+      throw new TypeError('test')
+    }
+
+    await cllr.call(test)
   })
 })
