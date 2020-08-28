@@ -161,7 +161,8 @@ describe('stacktrace', () => {
 
     expect(stack[0]).toBe('TypeError: null operation is forbidden')
     expect(stack[1]).toMatch(/^ +at Stack.validateOperation \(.+\)$/)
-    expect(stack[2]).toMatch(/^ +at Stack.handle \(.+\)$/)
-    expect(stack[3]).toMatch(/^ +at Stack.start \(.+\)$/)
+    expect(stack[2]).toMatch(/^ +at Stack.validateOperation \(.+\)$/)
+    expect(stack[3]).toMatch(/^ +at Stack.handle \(.+\)$/)
+    expect(stack[4]).toMatch(/^ +at Stack.start \(.+\)$/)
   })
 })

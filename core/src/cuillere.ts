@@ -1,4 +1,4 @@
-import { HandlerDescriptor, Plugin, Validator, batchPlugin, concurrentPlugin, contextPlugin } from './plugins'
+import { HandlerDescriptor, Plugin, Validator, batchPlugin, concurrentPlugin, contextPlugin, channelsPlugin } from './plugins'
 import { Generator, GeneratorFunction } from './generator'
 import { Operation, call, start, coreNamespace } from './operations'
 import { Stack } from './stack'
@@ -19,6 +19,7 @@ export default function cuillere(...pPlugins: Plugin[]): Cuillere {
     batchPlugin(),
     concurrentPlugin(),
     contextPlugin(),
+    channelsPlugin(),
   ])
 
   const handlers: Record<string, HandlerDescriptor[]> = {}
