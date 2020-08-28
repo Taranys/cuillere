@@ -14,7 +14,7 @@ export function transactionPlugin(options: ProviderPluginOptions, transactionOpt
 
 export interface ProviderPluginOptions {
   poolProvider?: PoolProvider
-  poolConfigs?: PoolConfig[]
+  poolConfig?: PoolConfig | PoolConfig[]
 }
 
 const namespace = '@cuillere/postgres/provider'
@@ -24,7 +24,7 @@ function makeProviderPlugin(
   clientManagerFactory: (provider: PoolProvider) => ClientManager,
 ): Plugin {
   function createClientManager() {
-    const provider = options.poolProvider ?? new PoolProvider(...options.poolConfigs)
+    const provider = options.poolProvider ?? new PoolProvider(...[].concat(options.poolConfig))
     return clientManagerFactory(provider)
   }
 
