@@ -9,7 +9,7 @@ export const CuillerePostgresApolloPlugin = (
 ): ApolloServerPlugin => {
   const provider = options.poolProvider ?? new PoolProvider(...options.poolConfigs)
 
-  return ({
+  return {
     requestDidStart() {
       let shouldRollback = false
       return {
@@ -22,7 +22,7 @@ export const CuillerePostgresApolloPlugin = (
         },
       }
     },
-  })
+  }
 }
 
 const getClientImpl: GeneratorFunction<[string], Client> = async function* getClient(name: string) {
